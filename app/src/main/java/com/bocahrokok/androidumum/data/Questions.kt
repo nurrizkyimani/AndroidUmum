@@ -7,5 +7,4 @@ data class Questions (
     val optionOne: String,
     val optionTwo: String,
     val correctAnswer: Int
-
 )

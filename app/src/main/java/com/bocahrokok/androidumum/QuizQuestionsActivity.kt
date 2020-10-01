@@ -33,21 +33,26 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     // END
 
 
+    //lifecycler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
 
-
+        //get username dari act sebelumnya
         mUserName = intent.getStringExtra(Constants.USER_NAME)
 
+        //get question dari constant
         mQuestionsList = Constants.getQuestion()
 
+        //set all question
         setQuestion()
 
+        //activate onclick listener
         tv_option_one.setOnClickListener(this)
         tv_option_two.setOnClickListener(this)
         btn_submit.setOnClickListener(this)
 
+        //progressbar max;
         progressBar.max = mQuestionsList!!.size
 
 
@@ -58,18 +63,23 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         //current position mulai dari 1; tapi jadinya nanti index 0;
         val question = mQuestionsList!!.get(mCurrentPosition - 1) // Getting the question from the list with the help of current position.
 
+        //default option kita bikin fuc
         defaultOptionsView()
 
+        //kalau misal currentposisi diakhir question list;
         if (mCurrentPosition == mQuestionsList!!.size) {
             btn_submit.text = "FINISH"
         } else {
             btn_submit.text = "SUBMIT"
         }
 
+        //progress bar mengituki
         progressBar.progress = mCurrentPosition
 
+        //
         tv_progress.text = "$mCurrentPosition" + "/" + progressBar.getMax()
 
+        //set semuanya gambar, text dkk;
         tv_question.text = question.question
         iv_image.setImageResource(question.image)
         tv_option_one.text = question.optionOne
@@ -81,6 +91,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     //text view selected waktu diclick;
     private fun selectedOptionView(tv: TextView, selectedOptionNum: Int) {
 
+        //default option view;
         defaultOptionsView()
 
         mSelectedOptionPosition = selectedOptionNum
@@ -90,7 +101,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         )
         tv.setTypeface(tv.typeface, Typeface.BOLD)
         tv.background = ContextCompat.getDrawable(
-            this@QuizQuestionsActivity,
+            this,
             R.drawable.selected_option_border_bg
         )
     }
@@ -117,10 +128,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
         when (v?.id) {
 
+            //saat opsi 1 diclick
             R.id.tv_option_one -> {
                 selectedOptionView(tv_option_one, 1)
             }
-
+            //saat opsi 2 diclick
             R.id.tv_option_two -> {
                 selectedOptionView(tv_option_two, 2)
             }
@@ -133,10 +145,12 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                     mCurrentPosition++
 
                     when {
+                        //kalau belum elesai questinya
                         mCurrentPosition <= mQuestionsList!!.size -> {
                             setQuestion()
                         }
                         else -> {
+                            //kalau udah;
                             // START
                             val intent =
                                 Intent(this, ResultActivity::class.java)
@@ -187,16 +201,17 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     // boiler plate buat drawable wrong and right;
     private fun answerView(answer: Int, drawableView: Int) {
 
+        //selected positition; then follow drawable dari salah atau benar;
         when (answer) {
             1 -> {
                 tv_option_one.background = ContextCompat.getDrawable(
-                    this@QuizQuestionsActivity,
+                    this,
                     drawableView
                 )
             }
             2 -> {
                 tv_option_two.background = ContextCompat.getDrawable(
-                    this@QuizQuestionsActivity,
+                    this,
                     drawableView
                 )
             }
